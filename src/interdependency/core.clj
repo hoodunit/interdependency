@@ -5,13 +5,7 @@
             [clojure.repl :as repl]
             [lacij.view.graphview :as lgv]
             [lacij.edit.graph :as leg]
-            [lacij.layouts.layout :as lll]
-            [loom.graph :as graph]
-            [loom.alg :as alg]))
-
-;; (def core-deps (c/dependencies 'clojure.core))
-;; (def println-deps ('clojure.core/println (c/dependencies 'clojure.core)))
-;; (def println-existing-deps (filter #(not (nil? %)) (map #(ns-resolve 'clojure.core %) println-deps)))
+            [lacij.layouts.layout :as lll]))
 
 (defn get-qualified-name [sym sym-ns]
   (let [resolved (ns-resolve sym-ns sym)]
@@ -60,17 +54,6 @@
         unused (set/difference core-set deps-set)]
     unused))
 
-;; (defn get-unused-core-fns [funs]
-;;   (let [core-deps (keys (c/dependencies 'clojure.core))
-;;         core-set (set core-deps)
-;;         all-deps (reduce (fn [a b]
-;;                            (let [deps (set (keys (get-all-deps-in-ns b 'clojure.core)))]
-;;                              (set/union a b))) #{} funs)
-;;         unused (set/difference core-set all-deps)]
-;;     unused))
-
-;; (def core-functions (map :name (c/functions 'clojure.core)))
-
 (defn functions [ns]
   (ns-interns ns))
 
@@ -112,21 +95,10 @@
         fn-with-deps (zipmap fn-symbols fn-deps)]
     fn-with-deps))
 
-;; (def core-functions (functions 'clojure.core))
-;; (def core-deps (function-deps 'clojure.core))
-;; (def core-deps-as-list (into {} (map (fn [[k v]] [k (into '() v)]) core-deps)))
-
-;; (def core-graph (c/graph core-deps-as-list))
-
 (defn export-graph [graph path]
   (let [layout (lll/layout graph :naive)
         build (leg/build layout)]
     (lgv/export build path :indent "yes")))
-
-;; (def core-graph (graph/digraph core-deps))
-;; (def println-deps (alg/bf-traverse g 'println))
-        
-  ;; (lgv/export (leg/build (lll/layout graph :naive)) path :indent "yes"))
 
 (defn export-core-deps-as-graph [ns filename]
   (let [deps (function-deps (symbol ns))

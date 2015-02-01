@@ -128,20 +128,21 @@
         
   ;; (lgv/export (leg/build (lll/layout graph :naive)) path :indent "yes"))
 
-(defn export-core-deps-as-graph [filename]
-  (let [core-deps (function-deps 'clojure.core)
-        core-deps-as-list (into {} (map (fn [[k v]] [k (into '() v)]) core-deps))
-        nodes (c/nodes core-deps-as-list)
-        edges (c/edges core-deps-as-list)]
+(defn export-core-deps-as-graph [ns filename]
+  (let [deps (function-deps (symbol ns))
+        deps-as-list (into {} (map (fn [[k v]] [k (into '() v)]) deps))
+        nodes (c/nodes deps-as-list)
+        edges (c/edges deps-as-list)]
     (c/export-graphviz nodes edges filename)))
 
 (defn print-usage []
-  (println "Usage: lein run <output filename>")
-  (println "Calculates and exports clojure.core dependencies as a DOT graph file (.dot)."))
+  (println "Usage: lein run <namespace> <output filename>")
+  (println "Calculates and exports clojure.core dependencies as a DOT graph file (.dot).")
+  (println "Example: lein run clojure.core core_deps"))
 
 (defn -main [& args]
-  (if (not= (count args) 1)
+  (if (not= (count args) 2)
     (print-usage)
-    (let [[filename _] args]
-      (export-core-deps-as-graph filename))))
+    (let [[ns filename _] args]
+      (export-core-deps-as-graph ns filename))))
 

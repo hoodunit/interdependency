@@ -135,6 +135,13 @@
         edges (c/edges core-deps-as-list)]
     (c/export-graphviz nodes edges filename)))
 
-(defn -main []
-  (export-core-deps-as-graph "clojurecore"))
+(defn print-usage []
+  (println "Usage: lein run <output filename>")
+  (println "Calculates and exports clojure.core dependencies as a DOT graph file (.dot)."))
+
+(defn -main [& args]
+  (if (not= (count args) 1)
+    (print-usage)
+    (let [[filename _] args]
+      (export-core-deps-as-graph filename))))
 

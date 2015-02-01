@@ -1,4 +1,4 @@
-(ns interdependencies.core
+(ns interdependency.core
   (:gen-class)
   (:require [clojure.set :as set]
             [clique.core :as c]
@@ -112,10 +112,9 @@
         fn-with-deps (zipmap fn-symbols fn-deps)]
     fn-with-deps))
 
-(def core-functions (functions 'clojure.core))
-(def core-deps (function-deps 'clojure.core))
-
-(def core-deps-as-list (into {} (map (fn [[k v]] [k (into '() v)]) core-deps)))
+;; (def core-functions (functions 'clojure.core))
+;; (def core-deps (function-deps 'clojure.core))
+;; (def core-deps-as-list (into {} (map (fn [[k v]] [k (into '() v)]) core-deps)))
 
 ;; (def core-graph (c/graph core-deps-as-list))
 
@@ -124,8 +123,18 @@
         build (leg/build layout)]
     (lgv/export build path :indent "yes")))
 
-(def core-graph (graph/digraph core-deps))
-(def println-deps (alg/bf-traverse g 'println))
+;; (def core-graph (graph/digraph core-deps))
+;; (def println-deps (alg/bf-traverse g 'println))
         
   ;; (lgv/export (leg/build (lll/layout graph :naive)) path :indent "yes"))
-;;(c/export-graphviz (c/nodes core-deps-as-list) (c/edges core-deps-as-list) "clojurecore")
+
+(defn export-core-deps-as-graph [filename]
+  (let [core-deps (function-deps 'clojure.core)
+        core-deps-as-list (into {} (map (fn [[k v]] [k (into '() v)]) core-deps))
+        nodes (c/nodes core-deps-as-list)
+        edges (c/edges core-deps-as-list)]
+    (c/export-graphviz nodes edges filename)))
+
+(defn -main []
+  (export-core-deps-as-graph "clojurecore"))
+

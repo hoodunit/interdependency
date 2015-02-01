@@ -1,4 +1,4 @@
-(defproject interdependencies "0.1.0-SNAPSHOT"
+(defproject interdependency "0.1.0-SNAPSHOT"
   :description "FIXME: write description"
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
@@ -7,6 +7,6 @@
                  [lein-clique "0.1.2"]
                  [lacij "0.8.0"]
                  [aysylu/loom "0.4.2"]]
-  :main ^:skip-aot interdependencies.core
+  :main ^:skip-aot interdependency.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}})

@@ -1,4 +1,4 @@
-digraph clojurecore {"extends?" -> "boolean";
+digraph coredeps {"extends?" -> "boolean";
 "var-set" -> "set";
 "generate-class" -> "val";
 "for" -> "chunk-buffer";

@@ -138,7 +138,7 @@
 (defn print-usage []
   (println "Usage: lein run <namespace> <output filename>")
   (println "Calculates and exports clojure.core dependencies as a DOT graph file (.dot).")
-  (println "Example: lein run clojure.core core_deps"))
+  (println "Example: lein run clojure.core clojure_core_deps"))
 
 (defn -main [& args]
   (if (not= (count args) 2)
